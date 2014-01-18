@@ -8,15 +8,18 @@ class Parser(object):
         SRTFILE = open(srtfile).readlines()
         in_out_time = re.compile('\d\d:\d\d.*?-->.*?\d\d:\d\d.*')
         count = 1
+        unset = True
         for line in SRTFILE:
             match_time = re.search(in_out_time, line)
-            if match_time:
-                count += 1
-                in_out = match_time.group().strip()
-                timings_text[in_out] = ''
+        if match_time:
+            count += 1
+            in_out = match_time.group().strip()
+            unset = False
+            timings_text[in_out] = ''
             else:
                 if str(count) != line.strip():
-                    timings_text[in_out] += line
+                    if unset==False:
+                        timings_text[in_out] += line
         return timings_text
 
 if __name__ == "__main__":

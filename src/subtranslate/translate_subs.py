@@ -17,7 +17,7 @@ def print_help_with_keys():
     print "Help with using Translator"
     print "<url>"
     exit()
-    
+
 def out_lang_codes():
     for lang in gengo.getServiceLanguages().values()[1]:
         print '{0:<10}{1:}'.format(lang.values()[2], lang.values()[3])
@@ -27,8 +27,9 @@ def findkeys(directory, regexp):
     return [f for f in fileList if f.find(regexp) > -1]
 
 gengo = MyGengo(
-    public_key = open(KEYS[0]).read(),
-    private_key = open(KEYS[1]).read(),
+    public_key = open(KEYS[0]).readline().strip(),
+    private_key = open(KEYS[1]).readline().strip(),
+    sandbox = True,
 )
 
 def translate_line(line, src_lang, trg_lang):
@@ -90,6 +91,7 @@ def __allchecks__(myarguments):
     return ''
     
 if __name__ == "__main__":
+    print gengo.getAccountBalance()
     parser = argparse.ArgumentParser(add_help = True)
     parser = argparse.ArgumentParser(description= 'Subtitle Translator')
     parser.add_argument('-i', action="store", nargs = '*', dest="srtfiles", type=argparse.FileType('rt'), help='-f subtitle.srt')
